@@ -40,7 +40,7 @@
   });
 
   /* ---------- Active nav link on scroll ---------- */
-  var sections = ['home', 'about', 'services', 'agents', 'pricing', 'contact']
+  var sections = ['home', 'about', 'services', 'pricing', 'contact']
     .map(function (id) { return document.getElementById(id); })
     .filter(Boolean);
   var navLinkEls = Array.prototype.slice.call(links.querySelectorAll('.nav__link'));
@@ -138,82 +138,5 @@
       if (success) success.hidden = false;
       form.querySelector('.btn').disabled = true;
     });
-  }
-
-  /* ---------- Voice agent demos ----------
-     NOTE: This is a front-end placeholder. It uses the browser's built-in
-     speech synthesis so each robot "speaks" a sample line — no backend.
-     Swap this out for your real voice-agent integration when ready. */
-  var demoBtns = document.querySelectorAll('.agent-demo');
-  if (demoBtns.length) {
-    var synth = window.speechSynthesis;
-
-    function clearSpeaking() {
-      document.querySelectorAll('.agent-card.is-speaking').forEach(function (c) {
-        c.classList.remove('is-speaking');
-        var b = c.querySelector('.agent-demo');
-        if (b) b.setAttribute('aria-pressed', 'false');
-      });
-    }
-
-    function pickVoice(gender) {
-      if (!synth) return null;
-      var voices = synth.getVoices() || [];
-      if (!voices.length) return null;
-      var en = voices.filter(function (v) { return /^en/i.test(v.lang); });
-      var pool = en.length ? en : voices;
-      var female = ['female', 'samantha', 'victoria', 'zira', 'aria', 'jenny', 'susan', 'karen', 'moira', 'tessa', 'fiona', 'female'];
-      var male = ['male', 'david', 'mark', 'daniel', 'alex', 'fred', 'rishi', 'arthur', 'george', 'guy'];
-      var hints = gender === 'male' ? male : female;
-      var match = pool.find(function (v) {
-        var n = v.name.toLowerCase();
-        return hints.some(function (h) { return n.indexOf(h) > -1; });
-      });
-      if (match) return match;
-      // fallback: spread voices so agents don't all sound identical
-      return gender === 'male' ? (pool[1] || pool[0]) : pool[0];
-    }
-
-    demoBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var card = btn.closest('.agent-card');
-        var wasSpeaking = card.classList.contains('is-speaking');
-        if (synth) synth.cancel();
-        clearSpeaking();
-        if (wasSpeaking) return; // second click = stop
-
-        card.classList.add('is-speaking');
-        btn.setAttribute('aria-pressed', 'true');
-
-        var safety;
-        function finish() {
-          card.classList.remove('is-speaking');
-          btn.setAttribute('aria-pressed', 'false');
-          clearTimeout(safety);
-        }
-
-        if (synth && 'SpeechSynthesisUtterance' in window) {
-          var u = new SpeechSynthesisUtterance(btn.getAttribute('data-line') || 'Hello!');
-          u.pitch = parseFloat(btn.getAttribute('data-pitch') || '1');
-          u.rate = parseFloat(btn.getAttribute('data-rate') || '1');
-          var v = pickVoice(btn.getAttribute('data-gender') || 'female');
-          if (v) u.voice = v;
-          u.onend = finish;
-          u.onerror = finish;
-          safety = setTimeout(finish, 9000); // in case onend never fires
-          synth.speak(u);
-        } else {
-          // no speech support — just play the animation briefly
-          safety = setTimeout(finish, 2600);
-        }
-      });
-    });
-
-    // Voices can load asynchronously in some browsers
-    if (synth && typeof synth.onvoiceschanged !== 'undefined') {
-      synth.onvoiceschanged = function () { synth.getVoices(); };
-    }
-    // Stop talking if the user navigates away
-    window.addEventListener('beforeunload', function () { if (synth) synth.cancel(); });
   }
 })();
