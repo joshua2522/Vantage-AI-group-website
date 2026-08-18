@@ -212,6 +212,63 @@ svg { width: 100%; height: 100%; }
 }
 @keyframes floaty { 50% { transform: translateY(-10px); } }
 
+/* ---------- Active Offers ---------- */
+.offers { padding: 0 0 clamp(48px, 6vw, 72px); }
+.offer {
+  position: relative; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 38px 40px; overflow: hidden;
+  border: 1px solid rgba(109, 75, 246, .28);
+  box-shadow: var(--shadow-md);
+}
+.offer::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--gold-grad);
+}
+.offer::after {
+  content: ''; position: absolute; right: -8%; top: -60%; width: 46%; height: 200%;
+  background: radial-gradient(circle, rgba(109, 75, 246, .10), transparent 68%);
+  pointer-events: none;
+}
+.offer__main { position: relative; z-index: 1; }
+.offer__flag {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold-deep); background: var(--gold-soft);
+  border: 1px solid rgba(109, 75, 246, .25);
+  padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
+}
+.offer__pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 0 0 rgba(109, 75, 246, .55); animation: offerPulse 2s infinite;
+}
+@keyframes offerPulse {
+  70% { box-shadow: 0 0 0 7px rgba(109, 75, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(109, 75, 246, 0); }
+}
+.offer__title { font-size: clamp(23px, 2.7vw, 31px); margin-bottom: 12px; max-width: 20ch; }
+.offer__plus { color: var(--gold); font-weight: 700; }
+.offer__sub { color: var(--muted); font-size: 15.5px; max-width: 56ch; margin-bottom: 20px; }
+.offer__list { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.offer__list li { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 500; color: var(--text); }
+
+.offer__cta {
+  position: relative; z-index: 1; display: flex; flex-direction: column; align-items: stretch;
+  gap: 12px; min-width: 240px; text-align: center;
+}
+.offer__value {
+  display: flex; flex-direction: column; line-height: 1.15;
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 27px;
+  letter-spacing: -.02em;
+  background: var(--gold-grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: var(--gold-deep);
+}
+.offer__value span {
+  font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13px; letter-spacing: 0;
+  margin-top: 4px; -webkit-text-fill-color: var(--muted); color: var(--muted);
+}
+.offer__note { font-size: 12.5px; color: var(--muted); }
+
 /* ---------- Stats ---------- */
 .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); }
 .stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
@@ -425,6 +482,11 @@ svg { width: 100%; height: 100%; }
   .about__panel { position: static; }
   .booking__grid { grid-template-columns: 1fr; gap: 44px; }
   .services__grid, .testimonials__grid { grid-template-columns: 1fr 1fr; }
+  .offer { grid-template-columns: 1fr; gap: 26px; padding: 34px 32px; }
+  .offer__cta { min-width: 0; align-items: flex-start; text-align: left; }
+  .offer__value { flex-direction: row; align-items: baseline; gap: 8px; }
+  .offer__value span { margin-top: 0; }
+  .offer__cta .btn { width: auto; align-self: stretch; }
   .process__grid { grid-template-columns: 1fr 1fr; gap: 28px; }
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
@@ -451,6 +513,8 @@ svg { width: 100%; height: 100%; }
 @media (max-width: 540px) {
   .services__grid, .testimonials__grid, .process__grid, .footer__grid { grid-template-columns: 1fr; }
   .plan--single { padding: 40px 24px 32px; }
+  .offer { padding: 28px 22px; }
+  .offer__list { flex-direction: column; gap: 9px; }
   .field-row { grid-template-columns: 1fr; }
   .hero__actions .btn { width: 100%; }
   .footer__bar-inner { flex-direction: column; text-align: center; }
